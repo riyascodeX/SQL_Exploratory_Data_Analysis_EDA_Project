@@ -12,28 +12,10 @@ WARNING:
     and ensure you have proper backups before running this script.
 */
 
-USE master;
-GO
-
--- Drop and recreate the 'DataWarehouseAnalytics' database
-IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouseAnalytics')
-BEGIN
-    ALTER DATABASE DataWarehouseAnalytics SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE DataWarehouseAnalytics;
-END;
-GO
-
 -- Create the 'DataWarehouseAnalytics' database
 CREATE DATABASE DataWarehouseAnalytics;
-GO
-
-USE DataWarehouseAnalytics;
-GO
-
 -- Create Schemas
-
 CREATE SCHEMA gold;
-GO
 
 CREATE TABLE gold.dim_customers(
 	customer_key int,
@@ -47,7 +29,7 @@ CREATE TABLE gold.dim_customers(
 	birthdate date,
 	create_date date
 );
-GO
+
 
 CREATE TABLE gold.dim_products(
 	product_key int ,
@@ -62,7 +44,7 @@ CREATE TABLE gold.dim_products(
 	product_line nvarchar(50),
 	start_date date 
 );
-GO
+
 
 CREATE TABLE gold.fact_sales(
 	order_number nvarchar(50),
@@ -75,40 +57,24 @@ CREATE TABLE gold.fact_sales(
 	quantity tinyint,
 	price int 
 );
-GO
 
-TRUNCATE TABLE gold.dim_customers;
-GO
+/*
+===============================================================================
+STEP 1: INITIAL DATA LOADING (RAW INGESTION)
+===============================================================================
+Script Purpose:
+    This script prepares the database for the manual Import/Export wizard.
+    It drops old tables and creates fresh structures to receive the raw data.
 
-BULK INSERT gold.dim_customers
-FROM 'C:\sql\sql-data-analytics-project\datasets\csv-files\gold.dim_customers.csv'
-WITH (
-	FIRSTROW = 2,
-	FIELDTERMINATOR = ',',
-	TABLOCK
-);
-GO
+**NOTE: 
+    STORED PROCEDURES / SERVER-SIDE 'COPY' COMMANDS ARE NOT USED HERE.
+    Due to local laptop server permission restrictions, automated scripts cannot
+    access local directory paths. Data must be imported using the GUI wizard.
 
-TRUNCATE TABLE gold.dim_products;
-GO
-
-BULK INSERT gold.dim_products
-FROM 'C:\sql\sql-data-analytics-project\datasets\csv-files\gold.dim_products.csv'
-WITH (
-	FIRSTROW = 2,
-	FIELDTERMINATOR = ',',
-	TABLOCK
-);
-GO
-
-TRUNCATE TABLE gold.fact_sales;
-GO
-
-BULK INSERT gold.fact_sales
-FROM 'C:\sql\sql-data-analytics-project\datasets\csv-files\gold.fact_sales.csv'
-WITH (
-	FIRSTROW = 2,
-	FIELDTERMINATOR = ',',
-	TABLOCK
-);
-GO
+ Load Data in pgAdmin:
+    1.  create the 6 empty tables.
+    3. Select 'Import/Export data...'.
+    4. Set the toggle to 'Import', select your CSV file, and choose 'CSV' format.
+    5. Turn on the 'Header' option and click 'OK'.
+===============================================================================
+*/
