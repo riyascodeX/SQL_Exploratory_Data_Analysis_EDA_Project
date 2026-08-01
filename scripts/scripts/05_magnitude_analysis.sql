@@ -49,8 +49,7 @@ SELECT
     p.category,
     SUM(f.sales_amount) AS total_revenue
 FROM gold.fact_sales f
-LEFT JOIN gold.dim_products p
-    ON p.product_key = f.product_key
+LEFT JOIN gold.dim_products p ON p.product_key = f.product_key
 GROUP BY p.category
 ORDER BY total_revenue DESC;
 
@@ -62,8 +61,7 @@ SELECT
     c.last_name,
     SUM(f.sales_amount) AS total_revenue
 FROM gold.fact_sales f
-LEFT JOIN gold.dim_customers c
-    ON c.customer_key = f.customer_key
+LEFT JOIN gold.dim_customers c ON c.customer_key = f.customer_key
 GROUP BY 
     c.customer_key,
     c.first_name,
@@ -75,7 +73,6 @@ SELECT
     c.country,
     SUM(f.quantity) AS total_sold_items
 FROM gold.fact_sales f
-LEFT JOIN gold.dim_customers c
-    ON c.customer_key = f.customer_key
+LEFT JOIN gold.dim_customers c ON c.customer_key = f.customer_key
 GROUP BY c.country
 ORDER BY total_sold_items DESC;
