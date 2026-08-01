@@ -60,8 +60,8 @@ FROM (
         customer_key,
         CASE 
             WHEN lifespan >= 12 AND total_spending > 5000 THEN 'VIP'
-            WHEN lifespan >= 12 AND total_spending <= 5000 THEN 'Regular'
-            ELSE 'New'
+            WHEN lifespan >= 12 AND total_spending <= 5000 THEN 'REGULAR'
+            ELSE 'NEW'
         END AS customer_segment
     FROM customer_spending
 ) AS segmented_customers
