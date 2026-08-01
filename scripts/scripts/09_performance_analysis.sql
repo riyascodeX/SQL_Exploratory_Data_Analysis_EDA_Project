@@ -40,7 +40,7 @@ SELECT
         WHEN current_sales - AVG(current_sales) OVER (PARTITION BY product_name) < 0 THEN 'Below Avg'
         ELSE 'Avg'
     END AS avg_change,
-    -- Year-over-Year Analysis
+    --year over year analysis
     LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year) AS py_sales,
     current_sales - LAG(current_sales) OVER (PARTITION BY product_name ORDER BY order_year) AS diff_py,
     CASE 
