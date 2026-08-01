@@ -7,7 +7,7 @@ Purpose:
     - To identify overall trends or spot anomalies.
 
 SQL Functions Used:
-    - COUNT(), SUM(), AVG()
+    - COUNT(), SUM(), AVG(),UINION ALL
 ===============================================================================
 */
 
